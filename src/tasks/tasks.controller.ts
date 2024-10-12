@@ -26,6 +26,7 @@ export class TaskController {
       return allTasks;
     } catch (errors) {
       console.log(errors);
+      throw new Error('Error fetching tasks');
     }
   }
 }

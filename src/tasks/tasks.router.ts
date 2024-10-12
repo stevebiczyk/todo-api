@@ -5,7 +5,16 @@ import { TaskController } from './tasks.controller';
 export const tasksRouter: Router = Router();
 
 // Define the default route
-tasksRouter.get('/tasks', (req: Request, res: Response) => {
-  const taskController = new TaskController();
-  taskController.getAll();
-});
+tasksRouter.get(
+  '/tasks',
+  async (req: Request, res: Response) => {
+    const taskController = new TaskController();
+    const allTasks = await taskController.getAll();
+    res.json(allTasks).status(200);
+  },
+);
+
+tasksRouter.post(
+  '/tasks',
+  async (req: Request, res: Response) => {},
+);
