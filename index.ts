@@ -5,16 +5,25 @@ import express, {
 } from 'express';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 // Initiate express app
 const app: Express = express();
 dotenv.config();
 
+// Parse request body
+
+app.use(bodyParser.json());
+
+// Use CORS install types
+app.use(cors());
+
 // Log environment variables
-console.log('Environment Variables:');
-console.log('MYSQL_USER:', process.env.MYSQL_USER);
-console.log('MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD);
-console.log('MYSQL_DB:', process.env.MYSQL_DB);
+// console.log('Environment Variables:');
+// console.log('MYSQL_USER:', process.env.MYSQL_USER);
+// console.log('MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD);
+// console.log('MYSQL_DB:', process.env.MYSQL_DB);
 
 // Create database connection
 export const AppDataSource = new DataSource({
