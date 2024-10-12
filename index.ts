@@ -1,13 +1,10 @@
-import express, {
-  Express,
-  Request,
-  Response,
-} from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Task } from './src/tasks/tasks.entity';
+import { tasksRouter } from './src/tasks/tasks.router';
 
 // Initiate express app
 const app: Express = express();
@@ -19,12 +16,6 @@ app.use(bodyParser.json());
 
 // Use CORS install types
 app.use(cors());
-
-// Log environment variables
-// console.log('Environment Variables:');
-// console.log('MYSQL_USER:', process.env.MYSQL_USER);
-// console.log('MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD);
-// console.log('MYSQL_DB:', process.env.MYSQL_DB);
 
 // Create database connection
 export const AppDataSource = new DataSource({
@@ -42,11 +33,11 @@ export const AppDataSource = new DataSource({
 const port = process.env.PORT;
 
 // Create a default route
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express & TypeScript Server');
-});
+// app.get('/', (req: Request, res: Response) => {
+//   res.send('Express & TypeScript Server');
+// });
 
-console.log('DataSource options:', AppDataSource.options);
+// console.log('DataSource options:', AppDataSource.options);
 
 AppDataSource.initialize()
   .then(() => {
@@ -61,3 +52,6 @@ AppDataSource.initialize()
       err,
     );
   });
+
+// Use the tasks router
+app.use('/', tasksRouter);
