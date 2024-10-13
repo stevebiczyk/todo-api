@@ -1,20 +1,21 @@
 import { AppDataSource } from '../../index';
 import { Task } from './tasks.entity';
 import { instanceToPlain } from 'class-transformer';
+import { Request, Response } from 'express';
 
-export class TaskController {
-  constructor(
-    private taskRepository = AppDataSource.getRepository(
-      Task,
-    ),
-  ) {}
-  public async getAll(): Promise<Task[]> {
+class TasksController {
+  public async getAll(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
     // Declare a variable to hold all tasks
     let allTasks: Task[];
 
     // Fetch all tasks using the repository
     try {
-      allTasks = await this.taskRepository.find({
+      allTasks = await AppDataSource.getRepository(
+        Task,
+      ).find({
         order: {
           date: 'ASC',
         },
@@ -23,10 +24,14 @@ export class TaskController {
       // Convert the tasks instance into an array of objects
       allTasks = instanceToPlain(allTasks) as Task[];
 
-      return allTasks;
+      return res.json(allTasks).status(200);
     } catch (errors) {
-      console.log(errors);
-      throw new Error('Error fetching tasks');
+      return res
+        .json({ error: 'Internal Server Error' })
+        .status(500);
+      //   throw new Error('Error fetching tasks');
     }
   }
 }
+
+export const taskController = new TasksController();
