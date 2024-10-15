@@ -49,20 +49,33 @@ class TasksController {
         .json({ errors: errors.array() });
     }
     // Create a new task instance
-    // const newTask = new Task();
-    // newTask.title = req.body.title;
-    // newTask.description = req.body.description;
-    // newTask.date = new Date();
-    // //Add the required properties to the new task instance
-    // // Save the task to the database
-    // try {
-    //     await AppDataSource.getRepository(Task).save(newTask);
-    //     return res.json(newTask).status(201);
-    // } catch (errors) {
-    //     return res
-    //         .json({ error: 'Internal Server Error' })
-    //         .status(500);
-    // }
+
+    const newTask = new Task();
+
+    //Add the required properties to the new task instance
+
+    newTask.title = req.body.title;
+    newTask.date = req.body.date;
+    newTask.description = req.body.description;
+    newTask.priority = req.body.priority;
+    newTask.status = req.body.status;
+
+    // Save the task to the database
+    let createdTask: Task;
+
+    try {
+      createdTask = await AppDataSource.getRepository(
+        Task,
+      ).save(newTask);
+
+      // Convert the task instance into an object
+      createdTask = instanceToPlain(createdTask) as Task;
+      return res.json(createdTask).status(201);
+    } catch (errors) {
+      return res
+        .json({ error: 'Internal Server Error' })
+        .status(500);
+    }
   }
 }
 

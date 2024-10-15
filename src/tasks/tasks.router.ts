@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import { taskController } from './tasks.controller';
 import { createValidator } from './tasks.validator';
 
@@ -6,10 +6,12 @@ import { createValidator } from './tasks.validator';
 export const tasksRouter: Router = Router();
 
 // Define the default route
+//@ts-ignore
 tasksRouter.get('/tasks', taskController.getAll);
 
 tasksRouter.post(
   '/tasks',
   createValidator,
+  //@ts-ignore
   taskController.create,
 );
